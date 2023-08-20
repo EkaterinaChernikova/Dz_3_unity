@@ -6,45 +6,42 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private const string Speed = "Speed";
-
-    [SerializeField] private float _speed = 10;
+    private const string Speed = nameof(Speed);
+    private Animator _animator;
+    [SerializeField] private float _movementSpeed = 10;
     [SerializeField] private float _rotationSpeed = 240;
     private float _animationSwitch = 0.0f;
-    private Animator _animator;
+    public readonly int _speed = Animator.StringToHash(Speed);
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) 
-            || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
-        {
-            _animationSwitch = 0.05f;
-        }
-
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * _movementSpeed * Time.deltaTime);
+            _animationSwitch = 0.05f;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * _speed * Time.deltaTime);
+            transform.Translate(Vector3.back * _movementSpeed * Time.deltaTime);
+            _animationSwitch = 0.05f;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.down * _rotationSpeed * Time.deltaTime);
+            _animationSwitch = 0.05f;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(Vector3.up * _rotationSpeed * Time.deltaTime);
+            _animationSwitch = 0.05f;
         }
 
         if (Input.GetKey(KeyCode.W) == false && Input.GetKey(KeyCode.S) == false

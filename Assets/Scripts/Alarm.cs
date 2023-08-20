@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class Alarm : MonoBehaviour
 {
-    private int alarmVolumeChange = -1;
-    [SerializeField] private float volumeChangeSpeed = 0.5f;
+    [SerializeField] private float _volumeChangeSpeed = 0.5f;
     [SerializeField] private AudioSource _audioSource;
-    private Coroutine alarm;
+    private Coroutine _changeVolumeCoroutine;
+    private const float MinimalVolume = 0.0f;
+    private const float MaximalVolume = 1.0f;
+    private int _volumeChangeDirection = -1;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Movement>() == true)
+        if (other.TryGetComponent<Movement>(out Movement component) == true)
         {
-            StartAlarm();
+            StartChangeVolume();
         }
     }
 
@@ -25,10 +27,10 @@ public class Alarm : MonoBehaviour
 
         do
         {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, volumeChange, volumeChangeSpeed * Time.deltaTime);
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, volumeChange, _volumeChangeSpeed * Time.deltaTime);
             yield return null;
         }
-        while (_audioSource.volume > 0 && _audioSource.volume < 100);
+        while (_audioSource.volume > MinimalVolume && _audioSource.volume < MaximalVolume);
 
         if (_audioSource.volume == 0)
         {
@@ -36,15 +38,15 @@ public class Alarm : MonoBehaviour
         }
     }
 
-    public void StartAlarm()
+    public void StartChangeVolume()
     {
-        alarmVolumeChange *= -1;
+        _volumeChangeDirection *= -1;
 
-        if(alarm != null)
+        if(_changeVolumeCoroutine != null)
         {
-            StopCoroutine(alarm);
+            StopCoroutine(_changeVolumeCoroutine);
         }
 
-        alarm = StartCoroutine(ChangeVolume(alarmVolumeChange));
+        _changeVolumeCoroutine = StartCoroutine(ChangeVolume(_volumeChangeDirection));
     }
 }
