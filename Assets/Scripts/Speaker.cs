@@ -2,21 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class Speaker : MonoBehaviour
 {
-    [SerializeField] private float _volumeChangeSpeed = 0.5f;
+    [SerializeField] private float _changeStep = 0.5f;
+
+    private int _volumeTargetValue = 0;
+
     private AudioSource _audioSource;
+
     private Coroutine _changeVolumeCoroutine;
-    private const float MinimalVolume = 0.0f;
-    private const float MaximalVolume = 1.0f;
-    private int _volumeChangeDirection = -1;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
 
-    private IEnumerator ChangeVolume(int volumeChange)
+    private IEnumerator ChangeVolume(int targetValue)
     {
         if (_audioSource.isPlaying == false)
         {
@@ -27,12 +30,11 @@ public class Speaker : MonoBehaviour
         {
             _audioSource.volume = Mathf.MoveTowards(
                 _audioSource.volume, 
-                volumeChange, 
-                _volumeChangeSpeed * Time.deltaTime);
+                targetValue, 
+                _changeStep * Time.deltaTime);
             yield return null;
         }
-        while (_audioSource.volume > MinimalVolume 
-            && _audioSource.volume < MaximalVolume);
+        while (_audioSource.volume != targetValue);
 
         if (_audioSource.volume == 0)
         {
@@ -42,13 +44,13 @@ public class Speaker : MonoBehaviour
 
     public void StartChangeVolume()
     {
-        _volumeChangeDirection *= -1;
+        _volumeTargetValue = _volumeTargetValue == 0 ? 1 : 0;
 
         if (_changeVolumeCoroutine != null)
         {
             StopCoroutine(_changeVolumeCoroutine);
         }
 
-        _changeVolumeCoroutine = StartCoroutine(ChangeVolume(_volumeChangeDirection));
+        _changeVolumeCoroutine = StartCoroutine(ChangeVolume(_volumeTargetValue));
     }
 }
