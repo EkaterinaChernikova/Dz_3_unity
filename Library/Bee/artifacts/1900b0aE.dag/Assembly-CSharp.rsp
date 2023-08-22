@@ -368,8 +368,9 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.XR.LegacyInputHelpers.ref.dll"
 -analyzer:"E:/Unity/Unity 2022.3.3f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"E:/Unity/Unity 2022.3.3f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
-"Assets/Scripts/Alarm.cs"
 "Assets/Scripts/Movement.cs"
+"Assets/Scripts/Sensor.cs"
+"Assets/Scripts/Speaker.cs"
 -langversion:9.0
 
 /deterministic

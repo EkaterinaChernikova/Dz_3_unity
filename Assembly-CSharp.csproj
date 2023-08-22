@@ -53,8 +53,9 @@
     <UnityVersion>2022.3.3f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Alarm.cs" />
+    <Compile Include="Assets\Scripts\Sensor.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
+    <Compile Include="Assets\Scripts\Speaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
